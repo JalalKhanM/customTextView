@@ -5,7 +5,7 @@
 
     This is an android library that is use to show image behind the given text.
 
-##$ Dependency:
+### Dependency:
 
 add this line to your project level build.gradle file
 allprojects {
@@ -31,4 +31,4 @@ app:mobiPixel_fontSize="40sp"
 />
 ````
 
-![customTextView](screenshot.png)
+!(screenshot.png)
