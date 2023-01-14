@@ -16,6 +16,7 @@ repositories {
 add this line to your module level build.gradle file
 implementation 'com.github.JalalKhanM:customTextView:1.0.1'
 
+
 Use:
 
 <com.custom.view.textview.JalalView android:id="@+id/textId"
