@@ -24,15 +24,18 @@ add this line to your module level build.gradle file
 
 ### Use:
 ````
-<com.custom.view.textview.JalalView 
-android:id="@+id/textId"
-android:layout_width="270dp"
-android:layout_height="70dp"
-android:background="@color/transparent"
-app:mobiPixel_Drawable="@drawable/yourImage"
-app:mobiPixel_String="your Text"
-app:mobiPixel_fontSize="40sp"
-/>
+ <com.custom.view.textview.JalalView
+        android:id="@+id/yourId"
+        android:layout_width="270dp"
+        android:layout_height="70dp"
+        android:background="@android:color/transparent"
+        app:mobiPixel_Drawable="@drawable/new_bg"
+        app:mobiPixel_String="Example Text"
+        app:mobiPixel_fontSize="40sp"
+        app:mobiPixel_isAnimateDrawable="true"
+        app:mobiPixel_AnimSpeed="2"
+   
+        />
 
 ````
 
