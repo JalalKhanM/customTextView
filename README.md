@@ -41,6 +41,8 @@ app:mobiPixel_fontSize="40sp"
 | mobiPixel_String | Text value for displaying. |
 | mobiPixel_fontSize | Set Size of Text |
 | mobiPixel_Drawable | drawable to show behind Text |
+| mobiPixel_isAnimateDrawable | tells whether image should animate behind the text or not, gets boolean value |
+| mobiPixel_AnimSpeed | sets the speed of animation behind the text |
 
 | Method | Description |
 | --- | --- |
@@ -50,4 +52,8 @@ app:mobiPixel_fontSize="40sp"
 ### ScreenShot:
 
 ![screenShot](https://user-images.githubusercontent.com/111576812/212462204-93ea5edc-d6a3-4837-9bc9-3c14bddf3ce0.PNG)
+
+
+![screenShot2](https://user-images.githubusercontent.com/111576812/212470029-3996dee8-6d53-436a-bdde-67cd7c076419.png)
+
 
