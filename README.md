@@ -24,7 +24,8 @@ implementation 'com.github.JalalKhanM:customTextView:1.0.1'
 
 ### Use:
 ````
-<com.custom.view.textview.JalalView android:id="@+id/textId"
+<com.custom.view.textview.JalalView 
+android:id="@+id/textId"
 android:layout_width="270dp"
 android:layout_height="70dp"
 android:background="@color/transparent"
