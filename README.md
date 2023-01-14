@@ -36,7 +36,7 @@ app:mobiPixel_fontSize="40sp"
 
 ````
 
-| attribute | Description |
+| Attribute | Description |
 | --- | --- |
 | mobiPixel_String | Text value for displaying. |
 | mobiPixel_fontSize | Set Size of Text |
