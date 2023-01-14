@@ -8,11 +8,14 @@
 ### Dependency:
 
 add this line to your project level build.gradle file
+
+````
 allprojects {
 repositories {
     maven { url 'https://jitpack.io' }
     }
 }
+````
 
 add this line to your module level build.gradle file
 
