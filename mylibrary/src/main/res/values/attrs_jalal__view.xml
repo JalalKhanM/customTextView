@@ -1,0 +1,8 @@
+<resources>
+    <declare-styleable name="Jalal_View">
+        <attr name="mobiPixel_String" format="string" />
+        <attr name="mobiPixel_fontSize" format="dimension" />
+        <attr name="mobiPixel_Color" format="color" />
+        <attr name="mobiPixel_Drawable" format="color|reference" />
+    </declare-styleable>
+</resources>
