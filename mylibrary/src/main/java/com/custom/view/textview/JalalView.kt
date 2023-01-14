@@ -179,9 +179,9 @@ class JalalView : View {
         _isAnimateDrawable = a.getBoolean(R.styleable.JalalView_mobiPixel_isAnimateDrawable, true)
         _AnimSpeed = a.getInt(R.styleable.JalalView_mobiPixel_AnimSpeed, 0)
 
-       /* _isAnimatTextChar = a.getBoolean(R.styleable.JalalView_mobiPixel_isAnimateChar, false)
-        _isAnimatTextCharRepeate =
-            a.getBoolean(R.styleable.JalalView_mobiPixel_isAnimateCharRepeat, false)*/
+        /* _isAnimatTextChar = a.getBoolean(R.styleable.JalalView_mobiPixel_isAnimateChar, false)
+         _isAnimatTextCharRepeate =
+             a.getBoolean(R.styleable.JalalView_mobiPixel_isAnimateCharRepeat, false)*/
 
 
         if (a.hasValue(R.styleable.JalalView_mobiPixel_Drawable)) {
@@ -262,14 +262,14 @@ class JalalView : View {
 
         exampleString?.let {
 
-                textPaint.getTextPath(
-                    exampleString,
-                    0,
-                    exampleString?.length?:0,
-                    paddingLeft + (contentWidth - textWidth) / 2,
-                    100f,
-                    path
-                )
+            textPaint.getTextPath(
+                exampleString,
+                0,
+                exampleString?.length ?: 0,
+                paddingLeft + (contentWidth - textWidth) / 2,
+                100f,
+                path
+            )
 
             canvas.drawPath(path, textPaint)
         }
@@ -349,12 +349,13 @@ class JalalView : View {
 
         Log.e("customLog", animSpeed.toLong().toString())
 
-        postDelayed(Runnable {
-            if (isAnimate)
-            invalidate()
-                             },
-            animSpeed.toLong())
-
+        postDelayed(
+            Runnable {
+                if (isAnimate)
+                    invalidate()
+            },
+            animSpeed.toLong()
+        )
 
 
     }

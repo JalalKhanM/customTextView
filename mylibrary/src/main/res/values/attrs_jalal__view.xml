@@ -6,6 +6,7 @@
         <attr name="mobiPixel_Drawable" format="color|reference" />
         <attr name="mobiPixel_isAnimateDrawable" format="boolean" />
         <attr name="mobiPixel_AnimSpeed" format="integer" />
+
 <!--        <attr name="mobiPixel_isAnimateChar" format="boolean" />-->
 <!--        <attr name="mobiPixel_isAnimateCharRepeat" format="boolean" />-->
     </declare-styleable>
