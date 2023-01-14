@@ -36,6 +36,17 @@ app:mobiPixel_fontSize="40sp"
 
 ````
 
+| attribute | Description |
+| --- | --- |
+| mobiPixel_String | Text value for displaying. |
+| mobiPixel_fontSize | Set Size of Text |
+| mobiPixel_Drawable | drawable to show behind Text |
+
+| Method | Description |
+| --- | --- |
+| setText | to set text programetically |
+
+
 ### ScreenShot:
 
 ![screenShot](https://user-images.githubusercontent.com/111576812/212462204-93ea5edc-d6a3-4837-9bc9-3c14bddf3ce0.PNG)
