@@ -19,7 +19,7 @@ repositories {
 
 add this line to your module level build.gradle file
 
-implementation 'com.github.JalalKhanM:customTextView:1.0.1'
+**implementation 'com.github.JalalKhanM:customTextView:1.0.1'**
 
 
 ### Use:
