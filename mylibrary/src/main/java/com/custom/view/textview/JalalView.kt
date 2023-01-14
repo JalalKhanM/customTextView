@@ -8,9 +8,12 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.text.TextPaint
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.core.content.res.ResourcesCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.findViewTreeViewModelStoreOwner
 
 
 /**
@@ -22,13 +25,19 @@ class JalalView : View {
     private var _exampleColor: Int = Color.RED // TODO: use a default from R.color...
     private var _exampleDimension: Float = 0f  // TODO: use a default from R.dimen...
     private var _fontFamily = ResourcesCompat.getFont(context, R.font.century)
+    private var _isAnimateDrawable = true
+    private var _AnimSpeed = 0
+    private var _isAnimatTextChar = true
+    private var _isAnimatTextCharRepeate = false
+
+    private var animateCharCount = 0
 
     private lateinit var textPaint: TextPaint
     private var textWidth: Float = 0f
     private var textHeight: Float = 0f
     private var myText = ""
     var path = Path()
-    var isFullText:Boolean = false
+    var isFullText: Boolean = false
 
     var maxX = 0
     var maxY = 0
@@ -36,6 +45,8 @@ class JalalView : View {
     private var curerentAlpha = 255
 
     var counters = 0
+
+    private var myCounter = 0
 
 
 // Need to keep track of the current alp
@@ -91,6 +102,34 @@ class JalalView : View {
             invalidateTextPaintAndMeasurements()
         }
 
+    var isAnimate: Boolean
+        get() = _isAnimateDrawable
+        set(value) {
+            _isAnimateDrawable = value
+            invalidateTextPaintAndMeasurements()
+        }
+
+    var animSpeed: Int
+        get() = _AnimSpeed
+        set(value) {
+            _AnimSpeed = value
+            invalidateTextPaintAndMeasurements()
+        }
+
+//    var isAnimateChar: Boolean
+//        get() = _isAnimatTextChar
+//        set(value) {
+//            _isAnimatTextChar = value
+//            invalidateTextPaintAndMeasurements()
+//        }
+//
+//    var isAnimateCharRep: Boolean
+//        get() = _isAnimatTextCharRepeate
+//        set(value) {
+//            _isAnimatTextCharRepeate = value
+//            invalidateTextPaintAndMeasurements()
+//        }
+
     /**
      * In the example view, this drawable is drawn above the text.
      */
@@ -98,7 +137,7 @@ class JalalView : View {
 
     var myCursor: Bitmap? = null
 
-    var dstBmp:Bitmap? = null
+    var dstBmp: Bitmap? = null
 
     constructor(context: Context) : super(context) {
         init(null, 0)
@@ -120,31 +159,39 @@ class JalalView : View {
 
         // Load attributes
         val a = context.obtainStyledAttributes(
-            attrs, R.styleable.Jalal_View, defStyle, 0
+            attrs, R.styleable.JalalView, defStyle, 0
         )
 
         _exampleString = a.getString(
-            R.styleable.Jalal_View_mobiPixel_String
+            R.styleable.JalalView_mobiPixel_String
         )
         _exampleColor = a.getColor(
-            R.styleable.Jalal_View_mobiPixel_Color,
+            R.styleable.JalalView_mobiPixel_Color,
             exampleColor
         )
         // Use getDimensionPixelSize or getDimensionPixelOffset when dealing with
         // values that should fall on pixel boundaries.
         _exampleDimension = a.getDimension(
-            R.styleable.Jalal_View_mobiPixel_fontSize,
+            R.styleable.JalalView_mobiPixel_fontSize,
             exampleDimension
         )
 
-        if (a.hasValue(R.styleable.Jalal_View_mobiPixel_Drawable)) {
+        _isAnimateDrawable = a.getBoolean(R.styleable.JalalView_mobiPixel_isAnimateDrawable, true)
+        _AnimSpeed = a.getInt(R.styleable.JalalView_mobiPixel_AnimSpeed, 0)
+
+       /* _isAnimatTextChar = a.getBoolean(R.styleable.JalalView_mobiPixel_isAnimateChar, false)
+        _isAnimatTextCharRepeate =
+            a.getBoolean(R.styleable.JalalView_mobiPixel_isAnimateCharRepeat, false)*/
+
+
+        if (a.hasValue(R.styleable.JalalView_mobiPixel_Drawable)) {
             exampleDrawable = a.getDrawable(
-                R.styleable.Jalal_View_mobiPixel_Drawable
+                R.styleable.JalalView_mobiPixel_Drawable
             )
             exampleDrawable?.callback = this
         }
 
-        val bitmapDrawable = exampleDrawable?.let {  it as BitmapDrawable }
+        val bitmapDrawable = exampleDrawable?.let { it as BitmapDrawable }
         myCursor = (bitmapDrawable)?.bitmap
 
         myCursor = myCursor?.let { Bitmap.createBitmap(it) }
@@ -178,12 +225,19 @@ class JalalView : View {
             textPaint.shader = gradient1
             textPaint.alpha = curerentAlpha
 
-            dstBmp = myCursor?.let {that-> Bitmap.createScaledBitmap(that, textWidth.toInt()+150, that.height+100,false) }
+            dstBmp = myCursor?.let { that ->
+                Bitmap.createScaledBitmap(
+                    that,
+                    textWidth.toInt() + 150,
+                    that.height + 100,
+                    false
+                )
+            }
 
         }
     }
 
-    fun setText(str:String){
+    fun setText(str: String) {
         exampleString = str
         invalidate()
     }
@@ -206,65 +260,110 @@ class JalalView : View {
 
 
 
-
-
         exampleString?.let {
 
-            textPaint.getTextPath(
-                exampleString,
-                0,
-                exampleString?.length?:0,
-                paddingLeft + (contentWidth - textWidth) / 2,
-                100f,
-                path
-            )
+                textPaint.getTextPath(
+                    exampleString,
+                    0,
+                    exampleString?.length?:0,
+                    paddingLeft + (contentWidth - textWidth) / 2,
+                    100f,
+                    path
+                )
 
-            canvas.drawPath(path,textPaint)
+            canvas.drawPath(path, textPaint)
         }
 
 
-        if (isFullText){
+        if (isFullText) {
             exampleString?.let {
                 canvas.save()
                 canvas.clipPath(path)
 
                 counters++
 
-                if(counters == 100)
-                {
+                if (counters == 100) {
                     counters = 0
                     maxX = 0
                     maxY = 0
                     isFullText = false
                 }
 
-                dstBmp?.let {    canvas.drawBitmap(it, (maxX--).toFloat(), (maxY--).toFloat(), textPaint) }
+                if (isAnimate)
+                    dstBmp?.let {
+                        canvas.drawBitmap(
+                            it,
+                            (maxX--).toFloat(),
+                            (maxY--).toFloat(),
+                            textPaint
+                        )
+                    }
+                else
+                    dstBmp?.let {
+                        canvas.drawBitmap(
+                            it,
+                            (0).toFloat(),
+                            (0).toFloat(),
+                            textPaint
+                        )
+                    }
 
                 canvas.restore()
             }
 
-        } else{
+        } else {
             exampleString?.let {
-
 
                 canvas.save()
                 canvas.clipPath(path)
                 counters++
 
-                if(counters == 100) {
+                if (counters == 100) {
                     counters = 0
                     maxX = 100
                     maxY = 100
                     isFullText = true
                 }
-                dstBmp?.let { canvas.drawBitmap(it, (maxX++).toFloat(), (maxY++).toFloat(), textPaint) }
+                if (isAnimate)
+                    dstBmp?.let {
+                        canvas.drawBitmap(
+                            it,
+                            (maxX++).toFloat(),
+                            (maxY++).toFloat(),
+                            textPaint
+                        )
+                    }
+                else
+                    dstBmp?.let {
+                        canvas.drawBitmap(
+                            it,
+                            (0).toFloat(),
+                            (0).toFloat(),
+                            textPaint
+                        )
+                    }
+
                 canvas.restore()
             }
         }
 
+        Log.e("customLog", animSpeed.toLong().toString())
 
-        invalidate()
+        postDelayed(Runnable {
+            if (isAnimate)
+            invalidate()
+                             },
+            animSpeed.toLong())
+
+
+
     }
+
+
+//    fun setSpeed(speed:Int){
+//        animSpeed = speed
+//    }
+
 }
 
 

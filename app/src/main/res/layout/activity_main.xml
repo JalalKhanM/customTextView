@@ -17,6 +17,8 @@
         app:mobiPixel_Drawable="@drawable/new_bg"
         app:mobiPixel_String="Example Text"
         app:mobiPixel_fontSize="40sp"
+        app:mobiPixel_isAnimateDrawable="true"
+        app:mobiPixel_AnimSpeed="5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
