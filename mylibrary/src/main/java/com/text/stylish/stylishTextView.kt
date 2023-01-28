@@ -1,6 +1,5 @@
 package com.text.stylish
 
-import android.R.attr.text
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
@@ -18,7 +17,7 @@ import androidx.core.content.res.ResourcesCompat
 /**
  * TODO: document your custom view class.
  */
-class JalalView : View {
+class stylishTextView : View {
 
     private var _exampleString: String? = null // TODO: use a default from R.string...
     private var _exampleColor: Int = Color.RED // TODO: use a default from R.color...

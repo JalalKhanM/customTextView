@@ -39,7 +39,7 @@ afterEvaluate {
             release(MavenPublication) {
                 from components.release
                 groupId = 'com.text.stylish'
-                artifactId = 'JalalView'
+                artifactId = 'stylishTextView'
                 version = '1.0.0'
             }
         }
