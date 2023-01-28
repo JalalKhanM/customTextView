@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace 'com.custom.view.textview'
+    namespace 'com.text.stylish'
     compileSdk 33
 
     defaultConfig {
@@ -38,7 +38,7 @@ afterEvaluate {
         publications {
             release(MavenPublication) {
                 from components.release
-                groupId = 'com.custom.view.textview'
+                groupId = 'com.text.stylish'
                 artifactId = 'JalalView'
                 version = '1.0.0'
             }

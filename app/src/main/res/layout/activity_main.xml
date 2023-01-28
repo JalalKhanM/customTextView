@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.custom.view.textview.JalalView
+    <com.text.stylish.JalalView
         android:id="@+id/empty"
         style="@style/Widget.AppTheme.MyView"
-        android:layout_width="270dp"
-        android:layout_height="70dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:background="@android:color/transparent"
         android:textAlignment="center"
         app:mobiPixel_Drawable="@drawable/new_bg"
         app:mobiPixel_String="Example Text"
         app:mobiPixel_fontSize="40sp"
-        app:mobiPixel_isAnimateDrawable="true"
+        app:mobiPixel_isAnimateDrawable="false"
         app:mobiPixel_AnimSpeed="5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,4 @@
-package com.custom.view.textview
+package com.custom.view.stylish
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4

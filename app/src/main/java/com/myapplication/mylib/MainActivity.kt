@@ -2,12 +2,7 @@ package com.myapplication.mylib
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.custom.view.textview.JalalView
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import java.util.logging.Handler
+import com.text.stylish.JalalView
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

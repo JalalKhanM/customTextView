@@ -1,4 +1,4 @@
-package com.custom.view.textview
+package com.custom.view.stylish
 
 import org.junit.Test
 
