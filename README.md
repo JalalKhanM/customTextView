@@ -1,5 +1,5 @@
 
-# JalalView
+# StylishTextView
 
 [![](https://jitpack.io/v/JalalKhanM/customTextView.svg)](https://jitpack.io/#JalalKhanM/customTextView)
 
