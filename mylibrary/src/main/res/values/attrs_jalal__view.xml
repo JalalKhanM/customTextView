@@ -3,9 +3,11 @@
         <attr name="mobiPixel_String" format="string" />
         <attr name="mobiPixel_fontSize" format="dimension" />
         <attr name="mobiPixel_Color" format="color" />
-        <attr name="mobiPixel_Drawable" format="color|reference" />
+        <attr name="mobiPixel_Drawable" format="reference" />
         <attr name="mobiPixel_isAnimateDrawable" format="boolean" />
         <attr name="mobiPixel_AnimSpeed" format="integer" />
+        <attr name="mobiPixel_isVertical" format="boolean" />
+        <attr name="mobiPixel_verticalSpeed" format="integer" />
 
 <!--        <attr name="mobiPixel_isAnimateChar" format="boolean" />-->
 <!--        <attr name="mobiPixel_isAnimateCharRepeat" format="boolean" />-->

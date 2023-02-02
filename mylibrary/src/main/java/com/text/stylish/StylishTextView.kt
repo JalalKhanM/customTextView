@@ -6,6 +6,7 @@ import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
+
 import android.text.TextPaint
 import android.util.AttributeSet
 import android.util.Log
@@ -14,10 +15,11 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.res.ResourcesCompat
 
 
+
 /**
  * TODO: document your custom view class.
  */
-class stylishTextView : View {
+class StylishTextView : View {
 
     private var _exampleString: String? = null // TODO: use a default from R.string...
     private var _exampleColor: Int = Color.RED // TODO: use a default from R.color...
@@ -25,10 +27,8 @@ class stylishTextView : View {
     private var _fontFamily = ResourcesCompat.getFont(context, R.font.century)
     private var _isAnimateDrawable = true
     private var _AnimSpeed = 0
-    private var _isAnimatTextChar = true
-    private var _isAnimatTextCharRepeate = false
-
-    private var animateCharCount = 0
+    private var _fadeSpeed = 0
+    private var _isFade = false
 
     private lateinit var textPaint: TextPaint
     private var textWidth: Float = 0f
@@ -36,15 +36,17 @@ class stylishTextView : View {
     private var myText = ""
     var path = Path()
     var isFullText: Boolean = false
+    var isUpdateOpacity = false
+    var isChangeImage = false
+    var scaleX1 = 1
+    var sacaleY1 = 1
 
+    private  var opacity = 255
     var maxX = 0
     var maxY = 0
-
     private var curerentAlpha = 255
-
     var counters = 0
 
-    private var myCounter = 0
 
 
 // Need to keep track of the current alp
@@ -114,6 +116,20 @@ class stylishTextView : View {
             invalidateTextPaintAndMeasurements()
         }
 
+    var fadeSpeed: Int
+        get() = _fadeSpeed
+        set(value) {
+            _fadeSpeed = value
+            invalidateTextPaintAndMeasurements()
+        }
+
+    var isFade: Boolean
+        get() = _isFade
+        set(value) {
+            _isFade = value
+            invalidateTextPaintAndMeasurements()
+        }
+
 //    var isAnimateChar: Boolean
 //        get() = _isAnimatTextChar
 //        set(value) {
@@ -132,10 +148,9 @@ class stylishTextView : View {
      * In the example view, this drawable is drawn above the text.
      */
     var exampleDrawable: Drawable? = null
-
     var myCursor: Bitmap? = null
-
     var dstBmp: Bitmap? = null
+    var fadeBitamp:Bitmap? = null
 
     constructor(context: Context) : super(context) {
         init(null, 0)
@@ -157,8 +172,7 @@ class stylishTextView : View {
 
         // Load attributes
         val a = context.obtainStyledAttributes(
-            attrs, R.styleable.JalalView, defStyle, 0
-        )
+            attrs, R.styleable.JalalView, defStyle, 0)
 
         _exampleString = a.getString(
             R.styleable.JalalView_mobiPixel_String
@@ -177,12 +191,17 @@ class stylishTextView : View {
         _isAnimateDrawable = a.getBoolean(R.styleable.JalalView_mobiPixel_isAnimateDrawable, true)
         _AnimSpeed = a.getInt(R.styleable.JalalView_mobiPixel_AnimSpeed, 0)
 
+        _isFade = a.getBoolean(R.styleable.JalalView_mobiPixel_isVertical, false)
+
+        _fadeSpeed = a.getInt(R.styleable.JalalView_mobiPixel_verticalSpeed, 25)
+
         /* _isAnimatTextChar = a.getBoolean(R.styleable.JalalView_mobiPixel_isAnimateChar, false)
          _isAnimatTextCharRepeate =
              a.getBoolean(R.styleable.JalalView_mobiPixel_isAnimateCharRepeat, false)*/
 
 
         if (a.hasValue(R.styleable.JalalView_mobiPixel_Drawable)) {
+            Log.e("myTesting"," hase value of First")
             exampleDrawable = a.getDrawable(
                 R.styleable.JalalView_mobiPixel_Drawable
             )
@@ -193,7 +212,6 @@ class stylishTextView : View {
         myCursor = (bitmapDrawable)?.bitmap
 
         myCursor = myCursor?.let { Bitmap.createBitmap(it) }
-
 
         a.recycle()
 
@@ -227,7 +245,7 @@ class stylishTextView : View {
             maxX = height - paddingTop - paddingBottom
             maxY = width - paddingLeft - paddingRight
 
-            dstBmp = myCursor?.let { that ->
+            myCursor = myCursor?.let { that ->
                 Bitmap.createScaledBitmap(
                     that,
                     textWidth.toInt() + 150,
@@ -235,6 +253,19 @@ class stylishTextView : View {
                     false
                 )
             }
+
+            dstBmp = myCursor
+
+            fadeBitamp = fadeBitamp?.let { that ->
+                Bitmap.createScaledBitmap(
+                    that,
+                    textWidth.toInt() + 150,
+                    that.height + 100,
+                    false
+                )
+            }
+
+            opacity = dstBmp?.height?:0
 
         }
     }
@@ -257,7 +288,7 @@ class stylishTextView : View {
         val paddingRight = paddingRight
         val paddingBottom = paddingBottom
 
-        val contentWidth = width - paddingLeft - paddingRight
+//        val contentWidth = width - paddingLeft - paddingRight
         val contentHeight = height - paddingTop - paddingBottom
 
 
@@ -266,6 +297,8 @@ class stylishTextView : View {
         exampleString?.let {
 
             val textLen = it.length
+
+            textPaint.alpha = 255
 
             textPaint.getTextPath(
                 exampleString,
@@ -280,89 +313,135 @@ class stylishTextView : View {
         }
 
 
-        if (isFullText) {
+
+        if(isFade && isAnimate){
             exampleString?.let {
                 canvas.save()
                 canvas.clipPath(path)
+                if(isUpdateOpacity){
 
-                counters--
+                    opacity++
+                    this.sacaleY1++
 
-                if (counters == 0) {
-                    counters = 0
-                    maxX = 0
-                    maxY = 0
-                    isFullText = false
+                    if(opacity == dstBmp?.height) {
+                        isUpdateOpacity = false
+                    }
+                }
+                else{
+                    this.sacaleY1--
+                    opacity--
+                    if(opacity <= contentHeight) {
+                        isUpdateOpacity = true
+                        isChangeImage = !isChangeImage
+                    }
                 }
 
-                if (isAnimate)
-                    dstBmp?.let {
-                        canvas.drawBitmap(
-                            it,
-                            (maxX--).toFloat(),
-                            (maxY--).toFloat(),
-                            textPaint
-                        )
-                    }
-                else
-                    dstBmp?.let {
-                        canvas.drawBitmap(
-                            it,
-                            (0).toFloat(),
-                            (0).toFloat(),
-                            textPaint
-                        )
-                    }
+                dstBmp?.let {
+                    canvas.drawBitmap(
+                        it,
+                       0f,
+                      sacaleY1.toFloat(),
+                        textPaint
+                    )
+                }
 
                 canvas.restore()
             }
+        }
+        else{
+            if (isFullText) {
+                exampleString?.let {
+                    canvas.save()
+                    canvas.clipPath(path)
 
-        } else {
-            exampleString?.let {
+                    counters--
 
-                canvas.save()
-                canvas.clipPath(path)
-                counters++
+                    if (counters == 0) {
+                        counters = 0
+                        maxX = 0
+                        maxY = 0
+                        isFullText = false
+                    }
 
-                if (counters == textHeight.toInt()*4) {
+                    if (isAnimate)
+                        dstBmp?.let {
+                            canvas.drawBitmap(
+                                it,
+                                (maxX--).toFloat(),
+                                (maxY--).toFloat(),
+                                textPaint
+                            )
+                        }
+                    else
+                        dstBmp?.let {
+                            canvas.drawBitmap(
+                                it,
+                                (0).toFloat(),
+                                (0).toFloat(),
+                                textPaint
+                            )
+                        }
 
-                    maxX = counters
-                    maxY = counters
-                    isFullText = true
+                    canvas.restore()
                 }
-                if (isAnimate)
-                    dstBmp?.let {
-                        canvas.drawBitmap(
-                            it,
-                            (maxX++).toFloat(),
-                            (maxY++).toFloat(),
-                            textPaint
-                        )
-                    }
-                else
-                    dstBmp?.let {
-                        canvas.drawBitmap(
-                            it,
-                            (0).toFloat(),
-                            (0).toFloat(),
-                            textPaint
-                        )
-                    }
 
-                canvas.restore()
+            }
+            else {
+                exampleString?.let {
+
+                    canvas.save()
+                    canvas.clipPath(path)
+                    counters++
+
+                    if (counters == textHeight.toInt()*4) {
+
+                        maxX = counters
+                        maxY = counters
+                        isFullText = true
+                    }
+                    if (isAnimate)
+                        dstBmp?.let {
+                            canvas.drawBitmap(
+                                it,
+                                (maxX++).toFloat(),
+                                (maxY++).toFloat(),
+                                textPaint
+                            )
+                        }
+                    else
+                        dstBmp?.let {
+                            canvas.drawBitmap(
+                                it,
+                                (0).toFloat(),
+                                (0).toFloat(),
+                                textPaint
+                            )
+                        }
+
+                    canvas.restore()
+                }
             }
         }
 
         Log.e("customLog", animSpeed.toLong().toString())
 
-        postDelayed(
-            {
-                if (isAnimate)
-                    invalidate()
-            },
-            animSpeed.toLong()
-        )
-
-
+        if(isFade){
+            postDelayed(
+                {
+                   invalidate()
+                },
+                fadeSpeed.toLong()
+            )
+        }
+        else{
+            postDelayed(
+                {
+                    if (isAnimate)
+                        invalidate()
+                },
+                animSpeed.toLong()
+            )
+        }
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
