@@ -22,19 +22,35 @@ add this line to your module level build.gradle file
 **implementation 'com.github.JalalKhanM:customTextView:1.0.1'**
 
 
-### Use:
+### Use 1:
 ````
- <com.custom.view.textview.JalalView
+ <com.text.stylish.StylishTextView
         android:id="@+id/yourId"
         android:layout_width="270dp"
         android:layout_height="70dp"
-        android:background="@android:color/transparent"
-        app:mobiPixel_Drawable="@drawable/new_bg"
+        app:mobiPixel_Drawable="@drawable/yourDrawable"
         app:mobiPixel_String="Example Text"
         app:mobiPixel_fontSize="40sp"
         app:mobiPixel_isAnimateDrawable="true"
-        app:mobiPixel_AnimSpeed="2"
+        app:mobiPixel_AnimSpeed="10"
    
+        />
+
+````
+
+### Use 2:
+````
+ <com.text.stylish.StylishTextView
+        android:id="@+id/yourId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:mobiPixel_Drawable="@drawable/yourDrawable"
+        app:mobiPixel_String="Example Text"
+        app:mobiPixel_fontSize="40sp"
+        app:mobiPixel_isAnimateDrawable="true"
+        app:mobiPixel_isVertical="true"
+        app:mobiPixel_verticalSpeed="20"
+ 
         />
 
 ````
@@ -46,6 +62,8 @@ add this line to your module level build.gradle file
 | mobiPixel_Drawable | drawable to show behind Text |
 | mobiPixel_isAnimateDrawable | tells whether image should animate behind the text or not, gets boolean value |
 | mobiPixel_AnimSpeed | sets the speed of animation behind the text |
+| mobiPixel_isVertical | tells whether image should animate vertically behind the text or not, gets boolean value |
+| mobiPixel_verticalSpeed | sets the speed of animation behind the text |
 
 | Method | Description |
 | --- | --- |
